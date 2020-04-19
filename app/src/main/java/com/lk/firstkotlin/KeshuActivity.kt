@@ -1,4 +1,4 @@
-package com.lk.kotlindemo1
+package com.lk.firstkotlin
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
