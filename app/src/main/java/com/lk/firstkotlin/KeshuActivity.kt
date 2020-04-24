@@ -8,9 +8,7 @@ import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
-import com.lk.firstkotlin.R
 import com.lk.firstkotlin.database.DBHelper
-import com.lk.firstkotlin.model.UserModel
 import kotlinx.android.synthetic.main.activity_piddi.*
 
 class KeshuActivity : AppCompatActivity() {
@@ -52,7 +50,7 @@ class KeshuActivity : AppCompatActivity() {
 
             addItem.setOnClickListener(View.OnClickListener {
 
-                var result= dbhelper.insertUser(UserModel(name=editText.text.toString()))
+                var result= dbhelper.insertUser(UserModel(name = editText.text.toString()))
                 Log.e("this",result.toString())
                 var data=dbhelper.getAllUser()
                 var users = dbhelper.getAllUser()

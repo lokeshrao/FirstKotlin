@@ -5,7 +5,7 @@ import android.content.Context
 import android.database.sqlite.SQLiteConstraintException
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
-import com.lk.firstkotlin.model.UserModel
+import com.lk.firstkotlin.UserModel
 
 class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
     override fun onCreate(db: SQLiteDatabase?) {

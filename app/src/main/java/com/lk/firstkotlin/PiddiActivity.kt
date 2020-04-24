@@ -5,10 +5,12 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.*
+import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_piddi.*
 
 class PiddiActivity : AppCompatActivity() {
 
+    var userList = arrayListOf<String>("pooja","lokesh","piddi","lokesh rao","pooja dassani","lokesh yadav")
      var listItem =
          arrayListOf<String>("Lokesh", "Keshu", "Guddu", "PubG-player", "Rao", "its_lokesh_rao")
     lateinit var addItem : Button
@@ -22,6 +24,8 @@ class PiddiActivity : AppCompatActivity() {
         addItem = findViewById(R.id.button)
         addItemBox = findViewById(R.id.editText)
 
+        recyclerview_list.layoutManager = LinearLayoutManager(this)
+        recyclerview_list.adapter = UserAdapter(userList,this)
         listView.adapter = arrayAdapter //ask lokesh why different ids
         listView.setOnItemClickListener { adapterView, view, position: Int, id: Long ->
             val selectedItem = adapterView.getItemAtPosition(position) as String
