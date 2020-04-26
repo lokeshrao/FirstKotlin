@@ -63,18 +63,18 @@ class KeshuActivity : AppCompatActivity() {
             }
 
             permissionsBtn.setOnClickListener(View.OnClickListener {
-                val send_sms = ContextCompat.checkSelfPermission(this,Manifest.permission.SEND_SMS)
+                val READ_SMS = ContextCompat.checkSelfPermission(this,Manifest.permission.READ_SMS)
                 val read_contacts = ContextCompat.checkSelfPermission(this,Manifest.permission.READ_CONTACTS)
                 val read_storage = ContextCompat.checkSelfPermission(this,Manifest.permission.READ_EXTERNAL_STORAGE)
                 val camera = ContextCompat.checkSelfPermission(this,Manifest.permission.CAMERA)
-                       Log.e("permission",send_sms.toString()+"   "+read_contacts.toString()+"  ")
-                if (send_sms!= PackageManager.PERMISSION_GRANTED && read_contacts!= PackageManager.PERMISSION_GRANTED && read_storage!= PackageManager.PERMISSION_GRANTED && camera!= PackageManager.PERMISSION_GRANTED) {
+                       Log.e("permission",READ_SMS.toString()+"   "+read_contacts.toString()+"  ")
+                if (READ_SMS!= PackageManager.PERMISSION_GRANTED && read_contacts!= PackageManager.PERMISSION_GRANTED && read_storage!= PackageManager.PERMISSION_GRANTED && camera!= PackageManager.PERMISSION_GRANTED) {
 
                     // Permission is not granted
                     // Should we show an explanation?
                     val MY_PERMISSIONS_REQUEST_READ_CONTACTS:Int =0
                     ActivityCompat.requestPermissions(this,
-                        arrayOf(Manifest.permission.SEND_SMS,Manifest.permission.READ_CONTACTS,Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.CAMERA),
+                        arrayOf(Manifest.permission.READ_SMS,Manifest.permission.READ_CONTACTS,Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.CAMERA),
                         MY_PERMISSIONS_REQUEST_READ_CONTACTS)
                         // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
                         // app-defined int constant. The callback method gets the
