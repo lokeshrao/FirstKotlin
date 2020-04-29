@@ -1,13 +1,19 @@
 package com.lk.firstkotlin
 
 import android.Manifest
+import android.app.NotificationManager
+import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.database.Cursor
+import android.os.Build
 import android.os.Bundle
 import android.provider.ContactsContract
+import android.provider.Settings
 import android.util.Log
 import android.view.View
 import android.widget.*
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -28,6 +34,7 @@ class KeshuActivity : AppCompatActivity() {
 
 
     lateinit var addItemBox : EditText
+    @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_keshu)
@@ -82,6 +89,16 @@ class KeshuActivity : AppCompatActivity() {
 
                 } else {
                   Toast.makeText(this,"Already have permission",Toast.LENGTH_LONG).show()
+                }
+                val mNotificationManager =
+                    getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+
+                if (!mNotificationManager.isNotificationPolicyAccessGranted) {
+                    val intent =
+                        Intent(Settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS)
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+                    startActivity(intent)
                 }
 
             })

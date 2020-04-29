@@ -1,11 +1,13 @@
 package com.lk.firstkotlin
 
 import android.content.Intent
+import android.database.Cursor
+import android.net.Uri
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.*
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_piddi.*
 
@@ -15,17 +17,26 @@ class PiddiActivity : AppCompatActivity() {
      var listItem =
          arrayListOf<String>("Lokesh", "Keshu", "Guddu", "PubG-player", "Rao", "its_lokesh_rao")
     lateinit var addItem : Button
+    lateinit var getSms : Button
+    lateinit var listAllMsg :ArrayList<String>
+    lateinit var allMsgView :ListView
+
+
+
     lateinit var addItemBox : EditText
     lateinit var musicPlayer : Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_piddi)
+        getSms=findViewById(R.id.getSms)
 
         val arrayAdapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, listItem)
         addItem = findViewById(R.id.button)
         addItemBox = findViewById(R.id.editText)
         musicPlayer = findViewById(R.id.button2)
+        allMsgView = findViewById(R.id.msgListview)
+
 
         recyclerview_list.layoutManager = LinearLayoutManager(this)
         recyclerview_list.adapter = UserAdapter(userList,this)
@@ -48,6 +59,29 @@ class PiddiActivity : AppCompatActivity() {
             listItem.remove(selectedItem)
             arrayAdapter.notifyDataSetChanged()
             return@setOnItemLongClickListener true
+        }
+        getSms.setOnClickListener(View.OnClickListener {
+            listAllMsg= ArrayList()
+            val uriSMSURI: Uri = Uri.parse("content://sms/inbox")
+            val cur: Cursor? = contentResolver.query(uriSMSURI, null, null, null, null)
+
+            while (cur != null && cur.moveToNext()) {
+                val address: String = cur.getString(cur.getColumnIndex("address"))
+                val body: String = cur.getString(cur.getColumnIndexOrThrow("body"))
+                listAllMsg.add("Number: $address .Message: $body")
+            }
+
+            if (cur != null) {
+                cur.close()
+            }
+            val arrayAdapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, listAllMsg)
+            allMsgView.setAdapter(arrayAdapter);
+
+
+
+        })
+        allMsgView.setOnItemClickListener { adapterView, view, position: Int, id: Long ->
+            ForegroundService.startService(this, "Foreground Service is running...")
         }
 
         addItem.setOnClickListener(View.OnClickListener {
