@@ -1,5 +1,6 @@
 package com.lk.firstkotlin
 
+import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -15,6 +16,7 @@ class PiddiActivity : AppCompatActivity() {
          arrayListOf<String>("Lokesh", "Keshu", "Guddu", "PubG-player", "Rao", "its_lokesh_rao")
     lateinit var addItem : Button
     lateinit var addItemBox : EditText
+    lateinit var musicPlayer : Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,6 +25,7 @@ class PiddiActivity : AppCompatActivity() {
         val arrayAdapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, listItem)
         addItem = findViewById(R.id.button)
         addItemBox = findViewById(R.id.editText)
+        musicPlayer = findViewById(R.id.button2)
 
         recyclerview_list.layoutManager = LinearLayoutManager(this)
         recyclerview_list.adapter = UserAdapter(userList,this)
@@ -53,6 +56,12 @@ class PiddiActivity : AppCompatActivity() {
             addItemBox.text = null
             arrayAdapter.notifyDataSetChanged()
 
+
+        })
+
+        musicPlayer.setOnClickListener(View.OnClickListener {
+
+            startActivity(Intent(this,MusicPlayer::class.java))
 
         })
 
