@@ -2,13 +2,12 @@ package com.lk.firstkotlin
 
 import android.Manifest
 import android.content.pm.PackageManager
+import android.database.Cursor
 import android.os.Bundle
+import android.provider.ContactsContract
 import android.util.Log
 import android.view.View
-import android.widget.ArrayAdapter
-import android.widget.Button
-import android.widget.EditText
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -18,14 +17,24 @@ import kotlinx.android.synthetic.main.activity_piddi.*
 class KeshuActivity : AppCompatActivity() {
     lateinit var listItem :ArrayList<String>
     lateinit var dbhelper:DBHelper
-
+    lateinit var listContactsList :ArrayList<String>
     lateinit var addItem : Button
     lateinit var permissionsBtn : Button
+    lateinit var getContactsBtn : Button
+    lateinit var name : String
+    lateinit var phonenumber : String
+
+    lateinit var cursor : Cursor
+
+
     lateinit var addItemBox : EditText
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_keshu)
         permissionsBtn=findViewById(R.id.permissions)
+        getContactsBtn=findViewById(R.id.getContacts)
+
+
         dbhelper= DBHelper(this)
        listItem=dbhelper.getAllUser()
             val arrayAdapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, listItem)
@@ -54,18 +63,18 @@ class KeshuActivity : AppCompatActivity() {
             }
 
             permissionsBtn.setOnClickListener(View.OnClickListener {
-                val send_sms = ContextCompat.checkSelfPermission(this,Manifest.permission.SEND_SMS)
-                val record_audio = ContextCompat.checkSelfPermission(this,Manifest.permission.RECORD_AUDIO)
+                val READ_SMS = ContextCompat.checkSelfPermission(this,Manifest.permission.READ_SMS)
+                val read_contacts = ContextCompat.checkSelfPermission(this,Manifest.permission.READ_CONTACTS)
                 val read_storage = ContextCompat.checkSelfPermission(this,Manifest.permission.READ_EXTERNAL_STORAGE)
                 val camera = ContextCompat.checkSelfPermission(this,Manifest.permission.CAMERA)
-                       Log.e("permission",send_sms.toString()+"   "+record_audio.toString()+"  ")
-                if (send_sms!= PackageManager.PERMISSION_GRANTED && record_audio!= PackageManager.PERMISSION_GRANTED && read_storage!= PackageManager.PERMISSION_GRANTED && camera!= PackageManager.PERMISSION_GRANTED) {
+                       Log.e("permission",READ_SMS.toString()+"   "+read_contacts.toString()+"  ")
+                if (READ_SMS!= PackageManager.PERMISSION_GRANTED && read_contacts!= PackageManager.PERMISSION_GRANTED && read_storage!= PackageManager.PERMISSION_GRANTED && camera!= PackageManager.PERMISSION_GRANTED) {
 
                     // Permission is not granted
                     // Should we show an explanation?
                     val MY_PERMISSIONS_REQUEST_READ_CONTACTS:Int =0
                     ActivityCompat.requestPermissions(this,
-                        arrayOf(Manifest.permission.SEND_SMS,Manifest.permission.RECORD_AUDIO,Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.CAMERA),
+                        arrayOf(Manifest.permission.READ_SMS,Manifest.permission.READ_CONTACTS,Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.CAMERA),
                         MY_PERMISSIONS_REQUEST_READ_CONTACTS)
                         // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
                         // app-defined int constant. The callback method gets the
@@ -95,6 +104,27 @@ class KeshuActivity : AppCompatActivity() {
 
 
             })
+
+        getContactsBtn.setOnClickListener(View.OnClickListener {
+            cursor = getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null,null, null, null)!!;
+            Log.e("thisass",cursor.toString())
+            listContactsList = ArrayList<String>()
+            var listContacts = findViewById<ListView>(R.id.listContacts)
+            while (cursor.moveToNext()) {
+
+
+                name = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME))
+
+                phonenumber = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER))
+                Log.e("thisass",name+phonenumber)
+
+                listContactsList.add(name + " "  + ":" + " " + phonenumber);
+            }
+            cursor.close()
+            val arrayAdapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, listContactsList)
+            listContacts.setAdapter(arrayAdapter);
+
+        })
         val actionbar = supportActionBar
         actionbar!!.title = "Keshu"
         actionbar.setDisplayHomeAsUpEnabled(true)
