@@ -35,43 +35,43 @@ class ForegroundService : Service() {
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         Toast.makeText(this,"onCreate",1000).show()
-         notificationwq = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM)
-        val r = RingtoneManager.getRingtone(applicationContext, notificationwq)
-        val mAudioManager:AudioManager = getSystemService(AUDIO_SERVICE) as AudioManager;
-        val max_volume_level = mAudioManager.getStreamMaxVolume(AudioManager.STREAM_ALARM)
-
-        //1st way: Thread.sleep : Less efficient compared to 2nd
-        //1st way: Thread.sleep : Less efficient compared to 2nd
-        var number=2000
-        val mNotificationManager =
-            getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-r.play()
-
-        try {
-            while (number>0) { //Or any Loops
-                //Do Something
-
-                // Check if the notification policy access has been granted for the app.
-
-                // Check if the notification policy access has been granted for the app.
-                if (!mNotificationManager.isNotificationPolicyAccessGranted) {
-                    val intent =
-                        Intent(Settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS)
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-
-                    startActivity(intent)
-                }
-                mAudioManager.setStreamVolume(
-                    AudioManager.STREAM_RING,
-                    max_volume_level,
-                    AudioManager.FLAG_SHOW_UI
-                );
-                Thread.sleep(400)
-                number--//Sample: Thread.sleep(1000); 1 second sleep
-            }
-        } catch (ex: InterruptedException) {
-            //SomeFishCatching
-        }
+//         notificationwq = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM)
+//        val r = RingtoneManager.getRingtone(applicationContext, notificationwq)
+//        val mAudioManager:AudioManager = getSystemService(AUDIO_SERVICE) as AudioManager;
+//        val max_volume_level = mAudioManager.getStreamMaxVolume(AudioManager.STREAM_ALARM)
+//
+//        //1st way: Thread.sleep : Less efficient compared to 2nd
+//        //1st way: Thread.sleep : Less efficient compared to 2nd
+//        var number=2000
+//        val mNotificationManager =
+//            getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+//r.play()
+//
+//        try {
+//            while (number>0) { //Or any Loops
+//                //Do Something
+//
+//                // Check if the notification policy access has been granted for the app.
+//
+//                // Check if the notification policy access has been granted for the app.
+//                if (!mNotificationManager.isNotificationPolicyAccessGranted) {
+//                    val intent =
+//                        Intent(Settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS)
+//                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//
+//                    startActivity(intent)
+//                }
+//                mAudioManager.setStreamVolume(
+//                    AudioManager.STREAM_RING,
+//                    max_volume_level,
+//                    AudioManager.FLAG_SHOW_UI
+//                );
+//                Thread.sleep(400)
+//                number--//Sample: Thread.sleep(1000); 1 second sleep
+//            }
+//        } catch (ex: InterruptedException) {
+//            //SomeFishCatching
+//        }
         //do heavy work on a background thread
         val input = intent?.getStringExtra("inputExtra")
         createNotificationChannel()
